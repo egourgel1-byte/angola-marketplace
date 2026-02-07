@@ -89,96 +89,82 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <h1 className="text-3xl font-extrabold text-gray-900">Seller Dashboard</h1>
-              <p className="text-gray-600 mt-1">Welcome back, <span className="font-semibold text-gray-900">{user?.name}</span></p>
-            </div>
-            <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-              Logout
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-gray-900">Seller Dashboard</h1>
+            <div className="flex items-center gap-4">
+              <span className="text-gray-600">Welcome, {user?.name}</span>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                Logout
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <Card className="group hover:shadow-xl transition-all">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-gray-600 mb-1">Businesses</p>
-                <p className="text-4xl font-extrabold text-gray-900">{stats.businessCount}</p>
-              </div>
-              <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card>
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
+              <div>
+                <p className="text-sm text-gray-600">Businesses</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.businessCount}</p>
+              </div>
             </div>
           </Card>
 
-          <Card className="group hover:shadow-xl transition-all">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-gray-600 mb-1">Products</p>
-                <p className="text-4xl font-extrabold text-gray-900">{stats.productCount}</p>
-              </div>
-              <div className="w-16 h-16 bg-gradient-to-br from-secondary-100 to-secondary-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-8 h-8 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <Card>
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mr-4">
+                <svg className="w-6 h-6 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
+              <div>
+                <p className="text-sm text-gray-600">Products</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.productCount}</p>
+              </div>
             </div>
           </Card>
 
-          <Card className="group hover:shadow-xl transition-all">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-gray-600 mb-1">Total Views</p>
-                <p className="text-4xl font-extrabold text-gray-900">{stats.totalViews}</p>
-              </div>
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <Card>
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Total Views</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.totalViews}</p>
               </div>
             </div>
           </Card>
         </div>
 
-        <Card padding="lg">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-            <div>
-              <h2 className="text-2xl font-extrabold text-gray-900">My Businesses</h2>
-              <p className="text-gray-600 mt-1">Manage your business listings</p>
-            </div>
+        <Card>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold text-gray-900">My Businesses</h2>
             <Link href="/dashboard/businesses/new">
-              <Button className="flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                Add New Business
-              </Button>
+              <Button>Add New Business</Button>
             </Link>
           </div>
 
           {businesses.length === 0 ? (
-            <div className="text-center py-16 bg-gray-50 rounded-xl">
-              <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">No businesses yet</h3>
-              <p className="text-gray-600 mb-6 max-w-md mx-auto">Get started by creating your first business listing and start reaching customers</p>
+            <div className="text-center py-12">
+              <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No businesses yet</h3>
+              <p className="text-gray-600 mb-4">Get started by creating your first business listing</p>
               <Link href="/dashboard/businesses/new">
                 <Button>Create Your First Business</Button>
               </Link>
@@ -186,60 +172,25 @@ export default function DashboardPage() {
           ) : (
             <div className="space-y-4">
               {businesses.map((business) => (
-                <div key={business.id} className="border-2 border-gray-100 rounded-xl p-6 hover:border-primary-200 hover:shadow-md transition-all">
-                  <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+                <div key={business.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                  <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{business.name}</h3>
-                      <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-700">
-                          {business.category}
-                        </span>
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-                          📍 {business.city}
-                        </span>
-                        {business.isVerified ? (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                            ✓ Verified
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
-                            ⏳ Pending
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex gap-6 text-sm text-gray-600">
-                        <span className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                          </svg>
-                          {business._count?.products || 0} products
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                          {business.views || 0} views
+                      <h3 className="text-lg font-semibold text-gray-900">{business.name}</h3>
+                      <p className="text-sm text-gray-600 mt-1">{business.category} • {business.city}</p>
+                      <div className="flex gap-4 mt-2 text-sm text-gray-500">
+                        <span>{business._count?.products || 0} products</span>
+                        <span>{business.views || 0} views</span>
+                        <span className={business.isVerified ? 'text-green-600' : 'text-yellow-600'}>
+                          {business.isVerified ? '✓ Verified' : 'Pending verification'}
                         </span>
                       </div>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex gap-2">
                       <Link href={`/businesses/${business.slug}`}>
-                        <Button variant="outline" size="sm" className="flex items-center gap-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                          View
-                        </Button>
+                        <Button variant="outline" size="sm">View</Button>
                       </Link>
                       <Link href={`/dashboard/businesses/${business.id}/edit`}>
-                        <Button size="sm" className="flex items-center gap-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
-                          Edit
-                        </Button>
+                        <Button size="sm">Edit</Button>
                       </Link>
                     </div>
                   </div>
