@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  phone         String?
+  role          UserRole  @default(SELLER)
+  emailVerified Boolean   @default(false)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  businesses    Business[]
+  
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  SELLER
+  USER
+}
+
+model Business {
+  id              String    @id @default(uuid())
+  name            String
+  slug            String    @unique
+  description     String    @db.Text
+  logo            String?
+  coverImage      String?
+  category        String
+  location        String
+  city            String
+  country         String    @default("Angola")
+  phone           String
+  email           String
+  website         String?
+  whatsapp        String?
+  isVerified      Boolean   @default(false)
+  isActive        Boolean   @default(true)
+  views           Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  ownerId         String
+  owner           User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  products        Product[]
+  
+  @@index([slug])
+  @@index([category])
+  @@index([city])
+  @@index([country])
+  @@map("businesses")
+}
+
+model Product {
+  id              String    @id @default(uuid())
+  name            String
+  slug            String
+  description     String    @db.Text
+  price           Float
+  currency        String    @default("AOA")
+  images          String[]
+  category        String
+  isService       Boolean   @default(false)
+  isAvailable     Boolean   @default(true)
+  stock           Int?
+  views           Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  businessId      String
+  business        Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  @@index([slug])
+  @@index([category])
+  @@index([businessId])
+  @@map("products")
+}
