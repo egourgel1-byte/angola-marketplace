@@ -10,14 +10,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 relative">
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8">
-              <span className="text-sm font-medium">🇦🇴 Connecting Angola & Africa</span>
+              <span className="text-sm font-medium">🇦🇴 Connecting Angola</span>
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
               Discover Angola's<br />
               <span className="text-primary-200">Best Businesses</span>
             </h1>
             <p className="text-lg md:text-xl mb-10 text-primary-50 max-w-2xl mx-auto leading-relaxed">
-              Connect with local businesses and explore quality products and services across Angola and Africa
+              Connect with local businesses and explore quality products and services across Angola
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/businesses">
@@ -68,7 +68,7 @@ export default function HomePage() {
               Everything You Need to Succeed
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              We make it easy to connect businesses with customers across Angola and Africa
+              We make it easy to connect businesses with customers across Angola
             </p>
           </div>
 
