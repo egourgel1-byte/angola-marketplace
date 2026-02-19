@@ -68,7 +68,9 @@ export default function HomePage() {
               Everything You Need to Succeed
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              We make it easy to connect businesses with customers across Angola
+
+              We make it easy to connect businesses with customers across Angola 
+              (nova pagina criar empresa)
             </p>
           </div>
 
