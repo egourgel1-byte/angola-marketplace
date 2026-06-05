@@ -8,19 +8,46 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  password      String
-  name          String
-  phone         String?
-  role          UserRole  @default(SELLER)
-  emailVerified Boolean   @default(false)
-  isActive      Boolean   @default(true)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                String      @id @default(uuid())
+  email             String      @unique
+  password          String
+  name              String
+  phone             String?
+  role              UserRole    @default(SELLER)
+  isActive          Boolean     @default(true)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Verification Badges & Info
+  emailVerified     Boolean     @default(false)
+  phoneVerified     Boolean     @default(false)
+  idVerified        Boolean     @default(false)
+  businessVerified  Boolean     @default(false)
   
-  businesses    Business[]
-  
+  // Profile Information
+  accountType       AccountType @default(INDIVIDUAL)
+  profileImage      String?     // Cloudinary profile photo URL
+  city              String?
+  country           String      @default("Angola")
+
+  // Trust, Reputation & Activity Metrics
+  completedSales    Int         @default(0)
+  completedPurchases Int        @default(0)
+  responseRate      Float?      // Percentage (0.0 to 100.0)
+  lastSeenAt        DateTime    @default(now())
+
+  // Relations
+  businesses        Business[]
+  products          Product[]   // Products owned directly by individual or business owner
+  favorites         Favorite[]
+  writtenReviews    Review[]    @relation("WrittenReviews")
+  receivedReviews   Review[]    @relation("ReceivedReviews")
+  reports           Report[]    @relation("Reporter")
+  verificationRequests VerificationRequest[]
+  buyerConversations   Conversation[] @relation("BuyerConversations")
+  sellerConversations  Conversation[] @relation("SellerConversations")
+  messages             Message[]
+
   @@map("users")
 }
 
@@ -28,6 +55,54 @@ enum UserRole {
   ADMIN
   SELLER
   USER
+}
+
+enum AccountType {
+  INDIVIDUAL
+  BUSINESS
+}
+
+enum VerificationType {
+  IDENTITY
+  BUSINESS
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ReportType {
+  PRODUCT
+  USER
+  BUSINESS
+}
+
+enum ReportStatus {
+  PENDING
+  RESOLVED
+  DISMISSED
+}
+
+enum OtpPurpose {
+  PHONE_VERIFICATION
+  EMAIL_VERIFICATION
+  PASSWORD_RECOVERY
+}
+
+model OtpVerification {
+  id        String     @id @default(uuid())
+  phone     String?    // Nullable if email-based OTP
+  email     String?    // Nullable if phone-based OTP
+  code      String
+  purpose   OtpPurpose
+  expiresAt DateTime
+  createdAt DateTime   @default(now())
+
+  @@index([phone])
+  @@index([email])
+  @@map("otp_verifications")
 }
 
 model Business {
@@ -50,11 +125,17 @@ model Business {
   views           Int       @default(0)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  images          String[]
+
+  // Monetization Prep Fields
+  isFeatured      Boolean   @default(false)
+  featuredUntil   DateTime?
   
   ownerId         String
   owner           User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   
   products        Product[]
+  conversations   Conversation[]
   
   @@index([slug])
   @@index([category])
@@ -79,11 +160,110 @@ model Product {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   
-  businessId      String
-  business        Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  // Monetization Prep Fields
+  isFeatured      Boolean   @default(false)
+  featuredUntil   DateTime?
+
+  // Direct Owner Link (Temporary optional for migration, will become required)
+  ownerId         String?
+  owner           User?      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   
+  // Optional Business Link (Null for individual listings)
+  businessId      String?
+  business        Business? @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  // Relations
+  favoritedBy     Favorite[]
+
   @@index([slug])
   @@index([category])
   @@index([businessId])
+  @@index([ownerId])
   @@map("products")
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@map("favorites")
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  rating      Int      // 1 to 5
+  comment     String?  @db.Text
+  createdAt   DateTime @default(now())
+  
+  reviewerId  String
+  reviewer    User     @relation("WrittenReviews", fields: [reviewerId], references: [id], onDelete: Cascade)
+  
+  sellerId    String
+  seller      User     @relation("ReceivedReviews", fields: [sellerId], references: [id], onDelete: Cascade)
+
+  isVerifiedInteraction Boolean @default(false) 
+
+  @@index([sellerId])
+  @@map("reviews")
+}
+
+model VerificationRequest {
+  id          String             @id @default(uuid())
+  userId      String
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        VerificationType
+  status      VerificationStatus @default(PENDING)
+  documents   String[]           // Cloudinary document file URLs
+  notes       String?            // Admin comments/rejection reasons
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@map("verification_requests")
+}
+
+model Report {
+  id          String       @id @default(uuid())
+  reporterId  String
+  reporter    User         @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  targetType  ReportType
+  targetId    String       // UUID of Product, User or Business
+  reason      String
+  description String?      @db.Text
+  status      ReportStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("reports")
+}
+
+model Conversation {
+  id          String    @id @default(uuid())
+  buyerId     String
+  buyer       User      @relation("BuyerConversations", fields: [buyerId], references: [id], onDelete: Restrict)
+  sellerId    String
+  seller      User      @relation("SellerConversations", fields: [sellerId], references: [id], onDelete: Restrict)
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Restrict)
+  createdAt   DateTime  @default(now())
+  messages    Message[]
+
+  @@unique([buyerId, sellerId, businessId])
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([businessId])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Restrict)
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Restrict)
+  text           String       @db.Text
+  createdAt      DateTime     @default(now())
 }
