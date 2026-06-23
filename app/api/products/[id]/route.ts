@@ -63,7 +63,11 @@ export async function PUT(
       return notFoundResponse('Product not found')
     }
 
-    if (product.business.ownerId !== authData.userId && authData.role !== 'ADMIN') {
+    const isOwner = product.business 
+      ? product.business.ownerId === authData.userId
+      : product.ownerId === authData.userId;
+
+    if (!isOwner && authData.role !== 'ADMIN') {
       return unauthorizedResponse('Not authorized to update this product')
     }
 
@@ -114,7 +118,11 @@ export async function DELETE(
       return notFoundResponse('Product not found')
     }
 
-    if (product.business.ownerId !== authData.userId && authData.role !== 'ADMIN') {
+    const isOwner = product.business 
+      ? product.business.ownerId === authData.userId
+      : product.ownerId === authData.userId;
+
+    if (!isOwner && authData.role !== 'ADMIN') {
       return unauthorizedResponse('Not authorized to delete this product')
     }
 

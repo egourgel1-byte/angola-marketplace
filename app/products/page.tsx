@@ -104,18 +104,20 @@ export default function ProductsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map((product) => (
                 <Card key={product.id} hover className="flex flex-col group overflow-hidden">
-                  {product.images && product.images[0] && (
-                    <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl mb-4 overflow-hidden">
-                      <img
-                        src={product.images[0]}
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  )}
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
-                    {product.name}
-                  </h3>
+                  <Link href={`/products/${product.id}`} className="block mb-2">
+                    {product.images && product.images[0] && (
+                      <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl mb-4 overflow-hidden">
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+                      {product.name}
+                    </h3>
+                  </Link>
                   <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow leading-relaxed">
                     {product.description}
                   </p>

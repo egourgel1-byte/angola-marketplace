@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 
@@ -91,17 +92,21 @@ export default async function BusinessProfilePage({
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {business.products.map((product: any) => (
-                    <div key={product.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <Link 
+                      key={product.id} 
+                      href={`/products/${product.id}`}
+                      className="border rounded-lg p-4 hover:shadow-md transition-shadow block group"
+                    >
                       {product.images && product.images[0] && (
                         <div className="w-full h-40 bg-gray-200 rounded-lg mb-3 overflow-hidden">
                           <img
                             src={product.images[0]}
                             alt={product.name}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                       )}
-                      <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
+                      <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">{product.name}</h3>
                       <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description}</p>
                       <div className="flex justify-between items-center">
                         <span className="text-lg font-bold text-primary-600">
@@ -116,7 +121,7 @@ export default async function BusinessProfilePage({
                           </span>
                         )}
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </Card>
